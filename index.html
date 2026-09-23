@@ -50,7 +50,7 @@
     box-shadow: var(--shadow-hard);
   }
   .marquee h1{
-    color:#fff; font-size:22px; letter-spacing:1px; text-align:center;
+    color:#fff; font-size:26px; letter-spacing:1px; text-align:center;
     text-shadow:0 2px 0 rgba(0,0,0,.3);
   }
   .bulb-row{ position:absolute; inset:0; display:flex; justify-content:space-between; padding:4px 8px; pointer-events:none; }
@@ -151,6 +151,7 @@
   }
   .bubble .item{ display:flex; flex-direction:column; align-items:center; gap:3px; }
   .bubble .item svg{ width:46px; height:46px; display:block; }
+  .bubble .item .emoji-icon{ width:46px; height:46px; font-size:42px; line-height:1; display:flex; align-items:center; justify-content:center; }
   .bubble .item small{font-size:10.5px; font-weight:800; color:var(--grape-dark); font-family:'Baloo 2';}
   .bubble .seat-count{ font-family:'Baloo 2'; font-size:22px; font-weight:800; color:var(--ink); background:var(--sun); border-radius:10px; padding:3px 12px; }
 
@@ -168,6 +169,7 @@
     box-shadow:0 4px 0 rgba(0,0,0,.15); cursor:pointer; transition:transform .08s ease, box-shadow .08s ease;
   }
   .opt-btn svg{width:30px;height:30px;}
+  .opt-btn .emoji-icon{font-size:30px; line-height:1; display:inline-flex; align-items:center; justify-content:center;}
   .opt-btn:active{transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.15);}
   .opt-btn.selected{ background:var(--sun); box-shadow:0 4px 0 var(--sun-dark), 0 0 0 3px #fff inset; transform:translateY(1px); }
   .seat-grid{grid-template-columns:repeat(5,1fr);}
@@ -202,6 +204,7 @@
   .ticket-row .placeholder{ font-family:'Nunito'; font-size:13px; color:#C9B8C4; font-style:italic; }
   .ticket-row .value .chip{ background:#FCE9F2; border-radius:9px; padding:3px 8px 3px 4px; display:flex; align-items:center; gap:4px; font-family:'Baloo 2'; font-size:12px; color:var(--ink);}
   .ticket-row .value .chip svg{width:22px;height:22px;}
+  .ticket-row .value .chip .emoji-icon{width:22px;height:22px;font-size:20px;line-height:1;display:inline-flex;align-items:center;justify-content:center;}
   .ticket-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:2px;}
   .barcode{ height:22px; flex:1; background:repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 3px, var(--ink) 3px 4px, transparent 4px 6px, var(--ink) 6px 8px, transparent 8px 10px); opacity:.75; border-radius:2px; }
   .ticket-no{ font-family:'Baloo 2'; font-size:10px; color:#B9A9BD; white-space:nowrap; }
@@ -267,7 +270,7 @@
   }
   @media (max-width:460px){
     body{padding:8px;}
-    .marquee h1{font-size:17px;}
+    .marquee h1{font-size:20px;}
     .icon-btn{width:46px;height:46px;font-size:20px;}
     .badge{font-size:12px; padding:5px 10px;}
     .opt-btn{min-height:60px;}
@@ -279,6 +282,7 @@
     .customer-avatar{ font-size:92px; }
     .bubble{ padding:10px 12px; gap:8px; }
     .bubble .item svg{ width:36px; height:36px; }
+    .bubble .item .emoji-icon{ width:36px; height:36px; font-size:34px; }
   }
 
   /* Movie Theater site navigation */
@@ -305,7 +309,7 @@
 
   <div class="marquee">
     <div class="bulb-row" id="bulbRow"></div>
-    <h1>🎬MOVIE THEATER RUSH</h1>
+    <h1>🎬 Movie Theater Rush</h1>
   </div>
 
   <div class="topbar">
@@ -464,13 +468,7 @@
       <polygon points="32,4 39,22 58,18 44,31 55,48 36,41 32,60 28,41 9,48 20,31 6,18 25,22" fill="#FF6B4A" stroke="#D8492B" stroke-width="2"/>
       <polygon points="32,16 35,28 44,27 36,34 39,44 32,38 25,44 27,34 20,27 29,28" fill="#FFDE59"/>
     `),
-    horror: svg(`
-      <circle cx="46" cy="16" r="10" fill="#F5E9FF"/>
-      <circle cx="50" cy="12" r="9" fill="#7C5CD6"/>
-      <path d="M32 30c-9-13-27-9-27 0 6-3 11 1 15 6-6 0-13 3-16 10 9 3 16-2 20-8 2 6 4 11 8 11s6-5 8-11c4 6 11 11 20 8-3-7-10-10-16-10 4-5 9-9 15-6 0-9-18-13-27 0z" fill="#3B2A55"/>
-      <circle cx="26" cy="30" r="2" fill="#FFC93C"/>
-      <circle cx="38" cy="30" r="2" fill="#FFC93C"/>
-    `),
+    horror: '<span class="emoji-icon" aria-hidden="true">👻</span>',
     comedy: svg(`
       <circle cx="32" cy="32" r="27" fill="#FFC93C"/>
       <path d="M20 26q4-7 9 0" stroke="#3B2A55" stroke-width="3.5" fill="none" stroke-linecap="round"/>
