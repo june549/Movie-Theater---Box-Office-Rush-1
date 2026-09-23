@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Box Office Rush — Movie Ticket Game</title>
+<title>Movie Theater Rush — Let's go to the Movie Game</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -695,11 +695,8 @@
     if(a.length!==b.length) return false;
     return a.slice().sort().join(',') === b.slice().sort().join(',');
   }
-  function comboMultiplier(streak){
-    if(streak >= 6) return 2;
-    if(streak >= 3) return 1.5;
-    return 1;
-  }
+  // Fixed Dahu Dollar rewards by how the customer felt about their order
+  const DOLLAR_VALUES = { happy: 10, satisfied: 5, unhappy: 1 };
 
   // ============ BUILD STATIC BUTTONS ============
   function buildOptionButtons(container, items, kind){
@@ -915,15 +912,15 @@
   function handleSuccess(){
     clearInterval(state.timerId);
     state.streak += 1;
-    const mult = comboMultiplier(state.streak) * (state.isSpecial ? 2 : 1);
-    const timeBonus = Math.round(state.timeLeft);
-    const gained = Math.round((10 + timeBonus) * mult);
-    state.score += gained;
     const dollars = state.timeLeft > 35 ? 3 : state.timeLeft > 15 ? 2 : 1;
-    if(dollars === 3){ state.satisfaction.happy++; }
+    const tier = dollars === 3 ? 'happy' : 'satisfied';
+    const mult = state.isSpecial ? 2 : 1;
+    const gained = DOLLAR_VALUES[tier] * mult;
+    state.score += gained;
+    if(tier === 'happy'){ state.satisfaction.happy++; }
     else{ state.satisfaction.satisfied++; }
     playCashRegister();
-    popCombo('+' + gained + (mult>1 ? '  x' + mult : ''));
+    popCombo('+' + gained + (mult>1 ? ' ★x' + mult : ''));
     adjustDifficulty(true);
     updateBadges();
     state.lastResultSuccess = true;
@@ -932,11 +929,13 @@
   function handleTimeout(){
     state.streak = 0;
     state.satisfaction.unhappy++;
+    const gained = DOLLAR_VALUES.unhappy;
+    state.score += gained;
     beep(140, .3, 'sawtooth');
     adjustDifficulty(false);
     updateBadges();
     state.lastResultSuccess = false;
-    showOverlay(false, 0, 1, 0);
+    showOverlay(false, gained, 1, 1);
   }
 
   function updateBadges(){
@@ -982,11 +981,10 @@
     el('overlayEmoji').textContent = success ? (dollars===3 ? '😄' : '🙂') : '😟';
     el('overlayTitle').textContent = success ? (dollars===3 ? 'Customer is thrilled!' : 'Order served!') : 'Time\'s up!';
     renderDollarIcons(el('overlayStars'), dollars, 3);
-    let sub = success ? `+${gained} points` + (mult>1 ? ` (combo x${mult}!)` : '') : 'No worries — let\'s try the next customer!';
-    if(success && dollars===3) sub += ' Earned max Dahu Dollars!';
-    else if(success) sub += ' They\'re satisfied with their order.';
-    if(success && state.isSpecial) sub += ' 🌟 Special guest bonus!';
-    if(!success) sub += ' The customer left unhappy.';
+    let sub = `+${gained} Dahu Dollar${gained===1?'':'s'}` + (mult>1 ? ` (special x${mult}!)` : '');
+    if(success && dollars===3) sub += ' Customer is Happy!';
+    else if(success) sub += ' Customer is Satisfied.';
+    else sub += ' Customer left Not Happy — try the next one!';
     el('overlaySub').textContent = sub;
     resultOverlay.classList.add('show');
     if(success) spawnConfetti(resultCard);
